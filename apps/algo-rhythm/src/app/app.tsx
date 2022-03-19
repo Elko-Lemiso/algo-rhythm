@@ -1,28 +1,51 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Message } from "@algo-rhythm/api-interfaces";
-import { audioRecorder } from "../util/recording";
+import { audioRecorder,playAudio } from "../util/recording";
+
+
 export const App = () => {
   const [m, setMessage] = useState<Message>({ message: "" });
   const [isRecording, setIsRecording] = useState(false);
-
+  let audio = useRef(null);
   const toggleRecording = () => {
-    audioRecorder
-      .start()
-      .then(() => {
-        //on success
-        console.log("Recording Audio...");
-      })
-      .catch((error) => {
-        //on error
-        //No Browser Support Error
-        if (
-          error.message.includes(
-            "mediaDevices API or getUserMedia method is not supported in this browser."
-          )
-        ) {
-          console.log("To record audio, use browsers like Chrome and Firefox.");
-        }
-      });
+    if (!isRecording) {
+      audioRecorder
+        .start()
+        .then(() => {
+          console.log("started");
+          setIsRecording(true);
+        })
+        .catch((error) => {
+          if (
+            error.message.includes(
+              "mediaDevices API or getUserMedia method is not supported in this browser."
+            )
+          ) {
+            console.log(
+              "To record audio, use browsers like Chrome and Firefox."
+            );
+          }
+        });
+    } else {
+      audioRecorder
+        .stop()
+        .then((audioAsblob ) => {
+          console.log("stoppped");
+          playAudio(audioAsblob, audio.current);
+          setIsRecording(false);
+        })
+        .catch((error) => {
+          if (
+            error.message.includes(
+              "mediaDevices API or getUserMedia method is not supported in this browser."
+            )
+          ) {
+            console.log(
+              "To record audio, use browsers like Chrome and Firefox."
+            );
+          }
+        });
+    }
   };
 
   return (
@@ -44,6 +67,7 @@ export const App = () => {
         >
           RECORD
         </button>
+        <audio ref={audio} controls></audio>
       </div>
       <div>{m.message}</div>
     </>
