@@ -1,0 +1,74 @@
+{
+  "root": "apps/algo-rhythm",
+  "sourceRoot": "apps/algo-rhythm/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/algo-rhythm",
+        "index": "apps/algo-rhythm/src/index.html",
+        "baseHref": "/",
+        "main": "apps/algo-rhythm/src/main.tsx",
+        "polyfills": "apps/algo-rhythm/src/polyfills.ts",
+        "tsConfig": "apps/algo-rhythm/tsconfig.app.json",
+        "assets": [
+          "apps/algo-rhythm/src/favicon.ico",
+          "apps/algo-rhythm/src/assets"
+        ],
+        "styles": ["apps/algo-rhythm/src/styles.scss"],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/algo-rhythm/src/environments/environment.ts",
+              "with": "apps/algo-rhythm/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "algo-rhythm:build",
+        "hmr": true,
+        "proxyConfig": "apps/algo-rhythm/proxy.conf.json"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "algo-rhythm:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/algo-rhythm/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/algo-rhythm"],
+      "options": {
+        "jestConfig": "apps/algo-rhythm/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

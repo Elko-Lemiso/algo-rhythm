@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "projects": {
+    "algo-rhythm": "apps/algo-rhythm",
+    "algo-rhythm-e2e": "apps/algo-rhythm-e2e",
+    "api": "apps/api",
+    "api-interfaces": "libs/api-interfaces"
+  }
+}
