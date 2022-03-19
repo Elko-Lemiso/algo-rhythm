@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Message } from "@algo-rhythm/api-interfaces";
-import { audioRecorder,playAudio } from "../util/recording";
-
+import { audioRecorder, playAudio } from "../util/recording";
 
 export const App = () => {
   const [m, setMessage] = useState<Message>({ message: "" });
   const [isRecording, setIsRecording] = useState(false);
-  let audio = useRef(null);
+  const audio = useRef(null);
+
   const toggleRecording = () => {
     if (!isRecording) {
       audioRecorder
@@ -29,7 +29,7 @@ export const App = () => {
     } else {
       audioRecorder
         .stop()
-        .then((audioAsblob ) => {
+        .then((audioAsblob) => {
           console.log("stoppped");
           playAudio(audioAsblob, audio.current);
           setIsRecording(false);
@@ -54,20 +54,30 @@ export const App = () => {
         style={{
           textAlign: "center",
           position: "absolute",
-          backgroundColor: "black",
+          backgroundColor: "#444444",
           height: "100vh",
           width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
         }}
       >
-        <h1>Record something</h1>
         <button
+          style={{
+            backgroundColor: isRecording ? "red" : "white",
+            border: "none",
+            borderRadius: "100px",
+            width: "100px",
+            height: "100px",
+            padding: "10px"
+          }}
           onClick={() => {
             toggleRecording();
           }}
         >
-          RECORD
+          CLICK ME
         </button>
-        <audio ref={audio} controls></audio>
+        <audio ref={audio} hidden controls></audio>
       </div>
       <div>{m.message}</div>
     </>
